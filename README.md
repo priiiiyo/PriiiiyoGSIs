@@ -1,40 +1,63 @@
-## Hi and Welcome to my area!
-Feel free to use but at least gib credits for all peru's that work hard for this to keep alive!  
 
-## Credits
-This repo is just a clone from peru's everywhere  
-Thanks for Erfan Abdi for his OwO tools  
-Thanks for all perus "Jamie, YukoSky, HeliOS, ElytrA8" for all :)  
-Thanks VegaZS for his Java BoboBot  
 
-## Downloads "NipponGSIs"
-Download ported GSI's from here!: https://sourceforge.net/projects/nippongsi/files/  
-Join us in telegram!: https://t.me/nippongsi_support  
-For updates follow here!: https://t.me/nippongsi  
+## Priiiyo, before you DMCA, read the fucking license
+
+
+Just a great way to make GSIs, even for dynamic partitions
+
 
 ## Requirements
-    Linux
+    Linux or Mac
 
-## Released GSIs "ErfanGSIs"
-Download links: https://mirrors.lolinet.com/firmware/gsi/  
-XDA thread: https://forum.xda-developers.com/project-treble/trebleenabled-device-development/pie-erfan-gsi-ports-t3906486  
+## Released GSIs (Erfan Abdi/ErfanGSIs)
+Download link: https://mirrors.lolinet.com/firmware/gsi/  
+XDA thread: https://forum.xda-developers.com/project-treble/trebleenabled-device-development/pie-erfan-gsi-ports-t3906486
+
+Telegram channel: https://t.me/ErfanGSI
+
 Telegram group: https://t.me/ErfanGSIs  
-Telegram channel: https://t.me/ErfanGSI  
+  
 
-## How to use? follow below instructions
+## Features
+* Patch to remove files from a previous GSI
+* Dynamic support (Q/R)
+* Nav Bar/Gesture fixes (Q/R)
+* An improved firmware extraction (Firmware_extractor)
+* SourceForge upload support (private utils file)
+* Dalvik patch
+* Additional information when an image is created
+* Others
+
+## Note
+* If you are going to edit the fork, please respect the License and NOTICE!
+
+## Priiiyo GSIs Info
+[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dm/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
+[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dw/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
+[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dt/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)  
+Download link: https://sourceforge.net/projects/priyogsis/files/
+
+Telegram channel: https://t.me/PriiiyoGSI
+
+Telegram group: https://t.me/PriiiyoGSIs
+  
 
 ### Download tools
 ```
-git clone --recurse-submodules https://github.com/erfanoabdi/ErfanGSIs.git
-cd ErfanGSIs
+git clone --recurse-submodules https://github.com/smpriiiyo/PriiiyoGSIs.git ErfanGSIs
 ```
 
 ### For setting up requirements
-    bash setup.sh
-
+    sudo bash setup.sh
+    
 ### Generating GSI from stock firmware URL
 Example: for making OxygenOS of oneplus 7 pro firmware, you can use this command inside ErfanGSIs folder
 ```
 ./url2GSI.sh https://oxygenos.oneplus.net/OnePlus7ProOxygen_21.O.07_OTA_007_all_1905120542_fc480574576b4843.zip OxygenOS
 ```
-check url2GSI.sh for more info
+check url2GSI.sh for more info    
+
+### Credits
+All credits Goes to Erfan Abdi, HeliOS, Nippon, Jamie, VegaZS, Realityislie, SSpidey, ElytrA8, Sky Yumi, and others.
+
+

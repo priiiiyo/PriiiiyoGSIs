@@ -39,7 +39,7 @@ do
     fi
 done
 if [ "$flag" == "false" ]; then
-    echo "$romtype is not supported, supported roms:"
+    echo "$romtype is not supported rom, supported roms:"
     for dir in "${roms[@]}"
     do
         ver=`echo "$dir" | rev | cut -d "/" -f 2 | rev`
@@ -54,7 +54,7 @@ case "$outputtype" in
     *"Aonly"*) flag=true ;;
 esac
 if [ "$flag" == "false" ]; then
-    echo "$outputtype is not supported, supported types:"
+    echo "$outputtype is not supported type, supported types:"
     echo "AB"
     echo "Aonly"
     exit 1
@@ -80,23 +80,24 @@ romsdir="$LOCALDIR/roms"
 prebuiltdir="$LOCALDIR/prebuilt"
 scriptsdir="$LOCALDIR/scripts"
 
+echo "Create Temp dir"
 rm -rf $tempdir
 mkdir -p "$systemdir"
 
 if [ "$sourcetype" == "Aonly" ]; then
-    echo "using P AOSP ramdisk"
+    echo "Warning: Aonly source detected, using P AOSP ramdisk"
     cd "$systemdir"
     tar xf "$prebuiltdir/ABrootDir.tar"
     cd "$LOCALDIR"
-    echo "Copying to temp"
-    ( cd "$sourcepath" ; sudo tar cf - . ) | ( cd "$systemdir/system" ; sudo tar xf - ) &> /dev/null
+    echo "Making copy of source rom to temp"
+    ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir/system" ; sudo tar xf - )
     cd "$LOCALDIR"
     sed -i "/ro.build.system_root_image/d" "$systemdir/system/build.prop"
     sed -i "/ro.build.ab_update/d" "$systemdir/system/build.prop"
     echo "ro.build.system_root_image=false" >> "$systemdir/system/build.prop"
 else
-    echo "Copying to temp"
-    ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir" ; sudo tar xf - ) &> /dev/null
+    echo "Making copy of source rom to temp"
+    ( cd "$systempath" ; sudo tar cf - . ) | ( cd "$systemdir" ; sudo tar xf - )
     if [[ -e "$sourcepath/mounted.txt" ]]; then
         for p in `cat "$sourcepath/mounted.txt"`; do
             [[ $p = system ]] && continue
@@ -106,7 +107,7 @@ else
                 mkdir "$systemdir/system/$p"
                 rm -rf "$systemdir/$p"
                 ln -s "/system/$p" "$systemdir/$p"
-                ( cd "$sourcepath/$p" ; sudo tar cf - . ) | ( cd "$systemdir/system/$p" ; sudo tar xf - ) &> /dev/null
+                ( cd "$sourcepath/$p" ; sudo tar cf - . ) | ( cd "$systemdir/system/$p" ; sudo tar xf - )
             fi
         done
     fi
@@ -119,7 +120,8 @@ fi
 # Detect is the src treble ro.treble.enabled=true
 istreble=`cat $systemdir/system/build.prop | grep ro.treble.enabled | cut -d "=" -f 2`
 if [[ ! "$istreble" == "true" ]]; then
-    echo "Not trebled but OK"
+    echo "The source is not treble supported"
+    exit 1
 fi
 
 # Detect Source API level
@@ -145,13 +147,13 @@ fi
 
 # Detect rom folder again
 if [[ ! -d "$romsdir/$sourcever/$romtype" ]]; then
-    echo "$romtype is not supported for $sourcever"
+    echo "$romtype is not supported rom for android $sourcever"
     exit 1
 fi
 
 # Detect arch
 if [[ ! -f "$systemdir/system/lib64/libandroid.so" ]]; then
-    echo "32bit source"
+    echo "32bit source detected, weird flex but ok!"
     # do something here?
 fi
 
@@ -159,7 +161,23 @@ fi
 $romsdir/$sourcever/$romtype/debloat.sh "$systemdir/system" 2>/dev/null
 $romsdir/$sourcever/$romtype/$romtypename/debloat.sh "$systemdir/system" 2>/dev/null
 
+# Resign to AOSP keys
+if [[ ! -e $romsdir/$sourcever/$romtype/$romtypename/DONTRESIGN ]]; then
+    if [[ ! -e $romsdir/$sourcever/$romtype/DONTRESIGN ]]; then
+        echo "Resigning to AOSP keys"
+        ispython2=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+        if [ $ispython2 -eq 0 ]; then
+            python2=python2
+        else
+            python2=python
+        fi
+        $python2 $toolsdir/ROM_resigner/resign.py "$systemdir/system" $toolsdir/ROM_resigner/AOSP_security > $tempdir/resign.log
+        $prebuiltdir/resigned/make.sh "$systemdir/system" 2>/dev/null
+    fi
+fi
+
 # Start patching
+echo "Patching started..."
 $scriptsdir/fixsymlinks.sh "$systemdir/system" 2>/dev/null
 $scriptsdir/nukeABstuffs.sh "$systemdir/system" 2>/dev/null
 $prebuiltdir/vendor_vndk/make$sourcever.sh "$systemdir/system" 2>/dev/null
@@ -192,7 +210,7 @@ if [ "$outputtype" == "Aonly" ]; then
 fi
 
 date=`date +%Y%m%d`
-outputname="$romtypename-$outputtype-$sourcever-$date-nippongsi"
+outputname="$romtypename-$outputtype-$sourcever-$date-PriiiyoGSI"
 outputimagename="$outputname".img
 outputtextname="$outputname".txt
 if [ "$4" == "" ]; then
@@ -217,7 +235,7 @@ elif [[ $(grep "ro.build.id" $systemdir/system/build.prop) ]]; then
 fi
 displayid2=$(echo "$displayid" | sed 's/\./\\./g')
 bdisplay=$(grep "$displayid" $systemdir/system/build.prop | sed 's/\./\\./g; s:/:\\/:g; s/\,/\\,/g; s/\ /\\ /g')
-sed -i "s/$bdisplay/$displayid2=Ported\.by\.Nippon\.using\.ErfanTools/" $systemdir/system/build.prop
+sed -i "s/$bdisplay/$displayid2=Made\.with\.❤️\.PriiiyoGSI/" $systemdir/system/build.prop
 
 # Getting system size and add approximately 5% on it just for free space
 systemsize=`du -sk $systemdir | awk '{$1*=1024;$1=int($1*1.05);printf $1}'`
@@ -230,13 +248,15 @@ bytesToHuman() {
     done
     echo "$b$d ${S[$s]}"
 }
-echo "Image Size: $(bytesToHuman $systemsize)" >> "$outputinfo"
+echo "Raw Image Size: $(bytesToHuman $systemsize)" >> "$outputinfo"
 
-echo "Generating GSI: $outputimagename"
+echo "Creating Image: $outputimagename"
 # Use ext4fs to make image in P or older!
 if [ "$sourcever" == "9" ]; then
     useold="--old"
 fi
 $scriptsdir/mkimage.sh $systemdir $outputtype $systemsize $output $useold > $tempdir/mkimage.log
 
+echo "Remove Temp dir"
 rm -rf "$tempdir"
+
