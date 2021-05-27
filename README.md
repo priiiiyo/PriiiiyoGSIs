@@ -1,6 +1,6 @@
 
 
-## Priiiyo, before you DMCA, read the fucking license
+## Priiiiyo, before you DMCA, read the fucking license
 
 
 Just a great way to make GSIs, even for dynamic partitions
@@ -32,19 +32,19 @@ Telegram group: https://t.me/ErfanGSIs
 * If you are going to edit the fork, please respect the License and NOTICE!
 
 ## Priiiyo GSIs Info
-[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dm/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
-[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dw/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
-[![Download Priiiyo GSIs](https://img.shields.io/sourceforge/dt/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)  
+[![Download Priiiiyo GSIs](https://img.shields.io/sourceforge/dm/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
+[![Download Priiiiyo GSIs](https://img.shields.io/sourceforge/dw/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)
+[![Download Priiiiyo GSIs](https://img.shields.io/sourceforge/dt/priyogsis.svg)](https://sourceforge.net/projects/priyogsis/files/latest/download)  
 Download link: https://sourceforge.net/projects/priyogsis/files/
 
-Telegram channel: https://t.me/PriiiyoGSI
+Telegram channel: https://t.me/PriiiiyoGSI
 
-Telegram group: https://t.me/PriiiyoGSIs
+Telegram group: https://t.me/PriiiiyoGSIs
   
 
 ### Download tools
 ```
-git clone --recurse-submodules https://github.com/smpriiiyo/PriiiyoGSIs.git ErfanGSIs
+git clone --recurse-submodules https://github.com/priiiiyo/PriiiiyoGSIs.git ErfanGSIs
 ```
 
 ### For setting up requirements
